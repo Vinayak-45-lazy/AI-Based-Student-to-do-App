@@ -1,5 +1,5 @@
 // API client with seamless LocalStorage fallback
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://ai-based-student-to-do-app.onrender.com/api';
 
 // Helper to get auth headers
 const getHeaders = () => {
@@ -144,7 +144,7 @@ export const api = {
           if (e.message !== 'Failed to fetch') throw e;
         }
       }
-      
+
       // Fallback
       const mockUser = {
         id: 'mock-user-id',
@@ -188,7 +188,7 @@ export const api = {
         theme: 'dark',
         notificationsEnabled: true
       };
-      
+
       const mockToken = 'mock-jwt-token-12345';
       localStorage.setItem('studyflow_token', mockToken);
       localStorage.setItem('studyflow_user', JSON.stringify(user));
@@ -254,7 +254,7 @@ export const api = {
       if (filters.subject) tasks = tasks.filter(t => t.subject === filters.subject);
       if (filters.priority) tasks = tasks.filter(t => t.priority === filters.priority);
       if (filters.status) tasks = tasks.filter(t => t.status === filters.status);
-      
+
       // Sort: status pending first, due date soonest, then priority order
       const priorityVal = { high: 3, medium: 2, low: 1 };
       return tasks.sort((a, b) => {
@@ -315,7 +315,7 @@ export const api = {
       const tasks = getLocalTasks();
       const index = tasks.findIndex(t => t.id === id);
       if (index === -1) throw new Error('Task not found');
-      
+
       tasks[index] = { ...tasks[index], ...taskData };
       localStorage.setItem('studyflow_tasks', JSON.stringify(tasks));
       return tasks[index];
@@ -471,7 +471,7 @@ export const api = {
       const notes = getLocalNotes();
       const idx = notes.findIndex(n => n.id === id);
       if (idx === -1) throw new Error('Note not found');
-      
+
       notes[idx] = {
         ...notes[idx],
         ...noteData,
@@ -533,7 +533,7 @@ export const api = {
       });
 
       scored.sort((a, b) => a.score - b.score);
-      
+
       // Update local storage order indexes
       const allTasks = getLocalTasks();
       scored.forEach((t, i) => {
@@ -570,7 +570,7 @@ export const api = {
       // Local chat responses engine
       const query = message.toLowerCase();
       let reply = '';
-      
+
       if (query.includes('feynman')) {
         reply = `### The Feynman Technique 🧠 (Offline Mode)
 Here is how you can learn any complex topic quickly using this Nobel-prize winning technique:
@@ -617,7 +617,7 @@ I can explain study techniques like **Feynman**, **Pomodoro**, and **Active Reca
       // Fallback analytics compiler
       const tasks = getLocalTasks();
       const sessions = getLocalSessions();
-      
+
       const totalTasks = tasks.length;
       const completedTasks = tasks.filter(t => t.status === 'completed');
       const completedTasksCount = completedTasks.length;
@@ -653,7 +653,7 @@ I can explain study techniques like **Feynman**, **Pomodoro**, and **Active Reca
         const d = new Date();
         d.setDate(d.getDate() - i);
         const dateStr = d.toISOString().split('T')[0];
-        
+
         // sum durations
         const duration = sessions
           .filter(s => s.date === dateStr)
@@ -730,7 +730,7 @@ I can explain study techniques like **Feynman**, **Pomodoro**, and **Active Reca
       // Fallback
       const stored = localStorage.getItem('studyflow_user');
       if (stored) return JSON.parse(stored);
-      
+
       const userObj = {
         id: 'mock-user-id',
         name: 'Demo Student',
